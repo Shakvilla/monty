@@ -26,6 +26,7 @@ void open_file(char *file_name)
 	fclose(fd);
 }
 
+
 /**
  * read_file - Reads the content of a file line by line.
  * @fd: Pointer to a file descriptor of an open file
@@ -52,7 +53,6 @@ void read_file(FILE *fd)
 	}
 	free(lineprt);
 }
-
 
 /**
  * interpret_line - Separates each line into tokens to determine
@@ -118,9 +118,9 @@ void find_func(char *opcode, char *value, int ln, int format)
 		{"rotl", rotl},
 		{"rotr", rotr},
 		{NULL, NULL}
-	};
+    };
 
-	if (opcode[0] == '#')
+    if (opcode[0] == '#')
 		return;
 	/*Iterates through list to find the right function*/
 	for (flag = 1, i = 0; func_list[i].opcode != NULL; i++)

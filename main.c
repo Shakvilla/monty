@@ -1,5 +1,6 @@
 #include "monty.h"
 <<<<<<< HEAD
+<<<<<<< HEAD
 bus_t bus = {NULL, NULL, NULL, 0};
 /**
 * main - monty code interpreter
@@ -47,47 +48,78 @@ return (0);
 
 =======
 stack_t *head = NULL;
+=======
+
+global_t vglo;
+>>>>>>> 929968c9f3372750e24898aee07afc1eafefe5b9
 
 /**
- * main - Entry Point
- * @argc: Number of command line arguments.
- * @argv: An array containing the arguments.
- * Return: Always Zero.
+ * free_vglo - frees the global variables
+ *
+ * Return: no return
  */
-int main(int argc, char **argv)
+void free_vglo(void)
 {
-	if (argc < 2 || argc > 2)
-		err(1);
-	open_file(argv[1]);
-	free_nodes();
-	return (0);
+	free_dlistint(vglo.head);
+	free(vglo.buffer);
+	fclose(vglo.fd);
 }
 
 /**
- * free_nodes - Frees nodes in the stack.
+ * start_vglo - initializes the global variables
+ *
+ * @fd: file descriptor
+ * Return: no return
  */
-void free_nodes(void)
+void start_vglo(FILE *fd)
 {
-	stack_t *tmp;
+	vglo.lifo = 1;
+	vglo.cont = 1;
+	vglo.arg = NULL;
+	vglo.head = NULL;
+	vglo.fd = fd;
+	vglo.buffer = NULL;
+}
 
-	if (head == NULL)
-		return;
+/**
+ * check_input - checks if the file exists and if the file can
+ * be opened
+ *
+ * @argc: argument count
+ * @argv: argument vector
+ * Return: file struct
+ */
+FILE *check_input(int argc, char *argv[])
+{
+	FILE *fd;
 
-	while (head != NULL)
+	if (argc == 1 || argc > 2)
 	{
-		tmp = head;
-		head = head->next;
-		free(tmp);
+		dprintf(2, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
 	}
+
+	fd = fopen(argv[1], "r");
+
+	if (fd == NULL)
+	{
+		dprintf(2, "Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
+
+	return (fd);
 }
 
 /**
- * create_node - Creates and populates a node.
- * @n: Number to go inside the node.
- * Return: Upon sucess a pointer to the node. Otherwise NULL.
+ * main - Entry point
+ *
+ * @argc: argument count
+ * @argv: argument vector
+ * Return: 0 on success
  */
-stack_t *create_node(int n)
+int main(int argc, char *argv[])
 {
+<<<<<<< HEAD
 	stack_t *node;
 
 	node = malloc(sizeof(stack_t));
@@ -99,3 +131,38 @@ stack_t *create_node(int n)
 	return (node);
 }
 >>>>>>> 07d48cffc088c3b055dd7dec5b8007340cecd121
+=======
+	void (*f)(stack_t **stack, unsigned int line_number);
+	FILE *fd;
+	size_t size = 256;
+	ssize_t nlines = 0;
+	char *lines[2] = {NULL, NULL};
+
+	fd = check_input(argc, argv);
+	start_vglo(fd);
+	nlines = getline(&vglo.buffer, &size, fd);
+	while (nlines != -1)
+	{
+		lines[0] = _strtoky(vglo.buffer, " \t\n");
+		if (lines[0] && lines[0][0] != '#')
+		{
+			f = get_opcodes(lines[0]);
+			if (!f)
+			{
+				dprintf(2, "L%u: ", vglo.cont);
+				dprintf(2, "unknown instruction %s\n", lines[0]);
+				free_vglo();
+				exit(EXIT_FAILURE);
+			}
+			vglo.arg = _strtoky(NULL, " \t\n");
+			f(&vglo.head, vglo.cont);
+		}
+		nlines = getline(&vglo.buffer, &size, fd);
+		vglo.cont++;
+	}
+
+	free_vglo();
+
+	return (0);
+}
+>>>>>>> 929968c9f3372750e24898aee07afc1eafefe5b9

@@ -1,22 +1,47 @@
 #include "monty.h"
 /**
- * f_pall - prints the stack
- * @head: stack head
- * @counter: no used
- * Return: no return
-*/
-void f_pall(stack_t **head, unsigned int counter)
+ * print_char - Prints the Ascii value.
+ * @stack: Pointer to a pointer pointing to top node of the stack.
+ * @line_number: Interger representing the line number of of the opcode.
+ */
+void print_char(stack_t **stack, unsigned int line_number)
 {
-	stack_t *h;
-	(void)counter;
+	int ascii;
 
-	h = *head;
-	if (h == NULL)
-		return;
-	while (h)
+	if (stack == NULL || *stack == NULL)
+		string_err(11, line_number);
+
+	ascii = (*stack)->n;
+	if (ascii < 0 || ascii > 127)
+		string_err(10, line_number);
+	printf("%c\n", ascii);
+}
+
+/**
+ * print_str - Prints a string.
+ * @stack: Pointer to a pointer pointing to top node of the stack.
+ * @ln: Interger representing the line number of of the opcode.
+ */
+void print_str(stack_t **stack, __attribute__((unused))unsigned int ln)
+{
+	int ascii;
+	stack_t *tmp;
+
+	if (stack == NULL || *stack == NULL)
 	{
-		printf("%d\n", h->n);
-		h = h->next;
+		printf("\n");
+		return;
 	}
+
+	tmp = *stack;
+	while (tmp != NULL)
+	{
+		ascii = tmp->n;
+		if (ascii <= 0 || ascii > 127)
+			break;
+		printf("%c", ascii);
+		tmp = tmp->next;
+	}
+	printf("\n");
 }
 

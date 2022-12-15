@@ -1,4 +1,3 @@
-
 #ifndef __MONTY__H
 #define __MONTY__H
 

@@ -108,3 +108,4 @@ When there is no errors, `monty` returns `0`. Otherwise, returns `1`
 
 ## Authors
 * Abdullah Clement Abdul Shekur: [Twitter](https://twitter.com/ShekurAbdullah) - [GitHub](https://github.com/Shakvilla)
+* Bilyamin Abdullahi Ahmad: [Twitter](https://twitter.com/baay02) - [GitHub](https://github.com/baay02)
